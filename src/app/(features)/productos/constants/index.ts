@@ -1,0 +1,1 @@
+export { MOCK_PRODUCTS, PRODUCT_TYPE_CONFIG, PRODUCT_TABS, PRODUCT_TYPE_ORDER } from "./products.constants";

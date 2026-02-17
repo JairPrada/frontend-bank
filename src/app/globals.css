@@ -1,1 +1,418 @@
 @import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ============================================================
+   HERO ANIMATIONS
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(6deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(6deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes grid-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in-up-delay-1 {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+}
+
+.animate-fade-in-up-delay-2 {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.4s forwards;
+}
+
+.animate-fade-in-up-delay-3 {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+}
+
+.animate-fade-in-right {
+  opacity: 0;
+  animation: fadeInRight 1s ease-out 0.3s forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s ease-in-out infinite;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.animate-confetti-fall {
+  animation: confettiFall 3s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow-delay {
+  animation: pulse-glow 4s ease-in-out 1s infinite;
+}
+
+.animate-pulse-glow-delay-2 {
+  animation: pulse-glow 4s ease-in-out 2s infinite;
+}
+
+/* Hero Grid Background */
+.hero-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: grid-move 20s linear infinite;
+}
+
+.hero-grid-overlay {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(190, 242, 100, 0.08) 0%, transparent 50%);
+}
+
+/* Mouse Particle Effect */
+@keyframes particle-expand {
+  0% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+}
+
+@keyframes particle-ring {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(0);
+    border-width: 3px;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3);
+    border-width: 1px;
+  }
+}
+
+.hero-particle {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(190, 242, 100, 0.5) 0%, rgba(16, 185, 129, 0.3) 50%, transparent 70%);
+  animation: particle-expand 1.5s ease-out forwards;
+  z-index: 5;
+}
+
+.hero-particle::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid rgba(190, 242, 100, 0.4);
+  animation: particle-ring 1.2s ease-out forwards;
+}
+
+
+
+@keyframes line-flow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes line-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes line-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.products-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(16, 185, 129, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.products-line-h {
+  height: .5px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.7) 50%, transparent 100%);
+  animation: line-pulse 2s ease-in-out infinite;
+}
+
+.products-line-v {
+  width: .5px;
+  background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.7) 50%, transparent 100%);
+  animation: line-pulse 2s ease-in-out infinite;
+}
+
+.products-line-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.products-line-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(132, 204, 22, 0.9), rgba(16, 185, 129, 0.9), transparent);
+  animation: line-shimmer 2.5s ease-in-out infinite;
+}
+
+/* ============================================================
+   INICIO SOLICITUD FORM STYLES
+   ============================================================ */
+
+.form-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-move 25s linear infinite;
+}
+
+.form-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
+}
+
+@keyframes border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-border {
+  position: relative;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(90deg, 
+    rgba(16, 185, 129, 0.3), 
+    rgba(132, 204, 22, 0.5), 
+    rgba(16, 185, 129, 0.3), 
+    rgba(132, 204, 22, 0.5));
+  background-size: 300% 100%;
+  animation: border-flow 4s ease infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 0;
+}
+
+.form-line-h {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.5) 50%, transparent 100%);
+  animation: line-pulse 3s ease-in-out infinite;
+}
+
+.form-line-v {
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.5) 50%, transparent 100%);
+  animation: line-pulse 3s ease-in-out infinite;
+}
+
+@keyframes scan-line {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), rgba(132, 204, 22, 0.8), rgba(16, 185, 129, 0.6), transparent);
+  animation: scan-line 4s linear infinite;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   FORM LIGHT THEME STYLES (Glass Effect)
+   ============================================================ */
+
+.form-grid-bg-light {
+  background-image:
+    linear-gradient(to right, rgba(16, 185, 129, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-move 25s linear infinite;
+}
+
+.form-line-h-light {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.25) 50%, transparent 100%);
+  animation: line-pulse 3s ease-in-out infinite;
+}
+
+.form-line-v-light {
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.25) 50%, transparent 100%);
+  animation: line-pulse 3s ease-in-out infinite;
+}
+
+.scan-line-light {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), rgba(132, 204, 22, 0.4), rgba(16, 185, 129, 0.3), transparent);
+  animation: scan-line 5s linear infinite;
+  opacity: 0.6;
+}
+
+.form-card-glass {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-card-glass:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -15px rgba(16, 185, 129, 0.2),
+              0 8px 32px rgba(16, 185, 129, 0.1);
+}
+
+

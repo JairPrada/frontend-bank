@@ -1,0 +1,6 @@
+export const LOADER_DELAY_MS = 1500;
+
+export const FORM_FIELD_CONFIG = {
+  IDENTIFICATION_MAX_LENGTH: 15,
+  OTP_CODE_LENGTH: 6,
+} as const;
