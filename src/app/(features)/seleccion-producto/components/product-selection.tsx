@@ -1,23 +1,36 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProductCard } from "./product-card";
 import { AVAILABLE_PRODUCTS } from "../constants";
-import { ArrowRightIcon, SpinnerIcon, ShieldIcon } from "@/shared/components/icons";
+import {
+  ArrowRightIcon,
+  SpinnerIcon,
+  ShieldIcon,
+} from "@/shared/components/icons";
 import Loader from "@/shared/components/loader";
 import { LOADER_DELAY_MS } from "@/shared/constants";
-import { useProductSelectionStore } from "@/shared/hooks";
+import {
+  useDocumentNumber,
+  useProductSelectionStore,
+  useRegisterResponse,
+} from "@/shared/hooks";
 import { createProduct } from "../services";
 import type { CreateProductRequestDto } from "../services/dtos/create-product-request.dto";
 import ROUTES from "@/routes";
+import { RegisterResponseDto } from "@/shared/hooks/use-form-store";
 
 export const ProductSelection = () => {
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setSelectedProduct: saveSelectedProduct } = useProductSelectionStore();
+  const { setSelectedProduct: saveSelectedProduct } =
+    useProductSelectionStore();
+  const documentNumber = useDocumentNumber();
+  const registerResponse: RegisterResponseDto = useRegisterResponse();
 
   const handleSelect = (productId: string) => {
     setSelectedProduct(productId);
@@ -33,6 +46,8 @@ export const ProductSelection = () => {
 
       const requestBody: CreateProductRequestDto = {
         productId: selectedProduct,
+        documentNumber,
+        userId: registerResponse.id,
       };
 
       await createProduct(requestBody);
@@ -72,7 +87,10 @@ export const ProductSelection = () => {
         ))}
       </div>
 
-      <div className="flex flex-col items-center gap-4 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+      <div
+        className="flex flex-col items-center gap-4 animate-fade-in-up"
+        style={{ animationDelay: "300ms" }}
+      >
         <button
           onClick={handleContinue}
           disabled={!selectedProduct || isSubmitting}

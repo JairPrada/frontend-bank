@@ -62,3 +62,39 @@ export const useProductSelectionStore = () => {
 export const useResetAllForms = () => {
   return useFormStore((state) => state.resetAllForms);
 };
+
+export const useDocumentNumber = () => {
+  return useFormStore((state) => state.application.documentNumber);
+};
+
+export interface RegisterResponseDto {
+  id: string;
+  documentNumber: string;
+  fullName: string;
+  city: string;
+  monthlyIncome: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export const useRegisterResponse = () => {
+  const registerResponse = useFormStore((state) => state.registerResponse);
+  const setRegisterResponse = useFormStore(
+    (state) => state.setRegisterResponse,
+  );
+
+  return {
+    ...registerResponse,
+    setRegisterResponse,
+  };
+};
+
+export const useLoginResponse = () => {
+  const loginResponse = useFormStore((state) => state.loginResponse);
+  const setLoginResponse = useFormStore((state) => state.setLoginResponse);
+
+  return {
+    ...loginResponse,
+    setLoginResponse,
+  };
+};

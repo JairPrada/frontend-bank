@@ -1,4 +1,5 @@
 export interface UserProduct {
+  [x: string]: any;
   id: string;
   name: string;
   type: ProductType;

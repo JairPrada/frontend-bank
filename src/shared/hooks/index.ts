@@ -5,4 +5,7 @@ export {
   useApplicationFormStore,
   useProductSelectionStore,
   useResetAllForms,
+  useDocumentNumber,
+  useRegisterResponse,
+  useLoginResponse,
 } from "./use-form-store";

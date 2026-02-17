@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:3000";
+  "http://localhost:5000";
 
 const CORRELATION_ID_KEY = "x-correlation-id";
 

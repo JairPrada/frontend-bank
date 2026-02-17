@@ -15,6 +15,8 @@ export const useFormStore = create<FormSlice>()(
         register: state.register,
         application: state.application,
         productSelection: state.productSelection,
+        registerResponse: state.registerResponse,
+        loginResponse: state.loginResponse,
       }),
     }
   )

@@ -19,11 +19,25 @@ export interface ProductSelectionState {
   selectedProductId: string | null;
 }
 
+export interface RegisterResponseState {
+  preClientId: string;
+  [key: string]: unknown;
+}
+
+export interface LoginResponseState {
+  accessToken: string;
+  fullName: string;
+  userId: string;
+  isRegistered: boolean;
+}
+
 export interface FormState {
   login: LoginFormState;
   register: RegisterFormState;
   application: ApplicationFormState;
   productSelection: ProductSelectionState;
+  registerResponse: RegisterResponseState;
+  loginResponse: LoginResponseState;
 }
 
 export interface FormActions {
@@ -40,6 +54,8 @@ export interface FormActions {
     value: ApplicationFormState[K],
   ) => void;
   setSelectedProduct: (productId: string | null) => void;
+  setRegisterResponse: (response: RegisterResponseState) => void;
+  setLoginResponse: (response: LoginResponseState) => void;
   resetLogin: () => void;
   resetRegister: () => void;
   resetApplication: () => void;
@@ -68,11 +84,24 @@ const initialProductSelectionState: ProductSelectionState = {
   selectedProductId: null,
 };
 
+const initialRegisterResponseState: RegisterResponseState = {
+  preClientId: "",
+};
+
+const initialLoginResponseState: LoginResponseState = {
+  accessToken: "",
+  fullName: "",
+  userId: "",
+  isRegistered: false,
+};
+
 export const createFormSlice: StateCreator<FormSlice> = (set) => ({
   login: initialLoginState,
   register: initialRegisterState,
   application: initialApplicationState,
   productSelection: initialProductSelectionState,
+  registerResponse: initialRegisterResponseState,
+  loginResponse: initialLoginResponseState,
 
   setLoginField: (field, value) =>
     set((state) => ({
@@ -92,6 +121,16 @@ export const createFormSlice: StateCreator<FormSlice> = (set) => ({
   setSelectedProduct: (productId) =>
     set(() => ({
       productSelection: { selectedProductId: productId },
+    })),
+
+  setRegisterResponse: (response) =>
+    set(() => ({
+      registerResponse: response,
+    })),
+
+  setLoginResponse: (response) =>
+    set(() => ({
+      loginResponse: response,
     })),
 
   resetLogin: () => set(() => ({ login: initialLoginState })),

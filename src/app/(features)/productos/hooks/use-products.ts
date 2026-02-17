@@ -2,13 +2,16 @@ import { useFetchProducts } from "./use-fetch-products";
 import { useEditProduct } from "./use-edit-product";
 import { useDeleteProduct } from "./use-delete-product";
 import { useProductsGrouping } from "./use-products-grouping";
+import { useLoginResponse } from "@/shared/hooks";
 
 export function useProducts() {
-  const { products, setProducts, isLoading, error, refetch } = useFetchProducts();
+  const { userId } = useLoginResponse();
+  const { products, setProducts, isLoading, error, refetch } =
+    useFetchProducts(userId);
 
   const handleProductUpdated = (id: string, newName: string) => {
     setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, name: newName } : p))
+      prev.map((p) => (p.id === id ? { ...p, name: newName } : p)),
     );
   };
 

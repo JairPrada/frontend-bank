@@ -9,12 +9,15 @@ import Select from "@/shared/components/select";
 import { IdCardIcon, LockIcon } from "@/shared/components/icons";
 import { SubmitButton } from "@/shared/components/submit-button";
 import { SecurityBadge } from "@/shared/components/security-badge";
-import { useRegisterFormStore } from "@/shared/hooks";
+import {
+  useDocumentNumber,
+  useRegisterFormStore,
+  useRegisterResponse,
+} from "@/shared/hooks";
 import { RegisterFormData } from "../interfaces";
 import { registerFormSchema } from "../utils";
 import { registerUser } from "../services";
 import type { RegisterRequestDto } from "../services/dtos/register-request.dto";
-import { RegisterHeader } from "./register-header";
 import { CITY_OPTIONS } from "../constants/city-options";
 import ROUTES from "@/routes";
 
@@ -22,6 +25,8 @@ export const RegisterForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { setFullName, setCity, setMonthlyIncome } = useRegisterFormStore();
+  const { setRegisterResponse } = useRegisterResponse();
+  const documentNumber = useDocumentNumber();
 
   const {
     register,
@@ -48,13 +53,15 @@ export const RegisterForm = () => {
       setMonthlyIncome(data.monthlyIncome);
 
       const requestBody: RegisterRequestDto = {
+        documentNumber,
         fullName: data.fullName,
         city: data.city,
         monthlyIncome: data.monthlyIncome,
         password: data.password,
       };
 
-      await registerUser(requestBody);
+      const response = await registerUser(requestBody);
+      setRegisterResponse(response);
       router.push(ROUTES.SELECT_PRODUCT);
     } catch (error) {
       console.error("Error en registro:", error);

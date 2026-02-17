@@ -9,7 +9,7 @@ import { IdCardIcon, LockIcon } from "@/shared/components/icons";
 import { SubmitButton } from "@/shared/components/submit-button";
 import { SecurityBadge } from "@/shared/components/security-badge";
 import { FORM_FIELD_CONFIG } from "@/shared/constants";
-import { useLoginFormStore } from "@/shared/hooks";
+import { useLoginFormStore, useLoginResponse } from "@/shared/hooks";
 import { LoginFormData } from "../interfaces";
 import { loginFormSchema } from "../utils";
 import { login } from "../services";
@@ -20,6 +20,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { setIdentificationNumber } = useLoginFormStore();
+  const { setLoginResponse } = useLoginResponse();
 
   const {
     register,
@@ -41,10 +42,11 @@ export const LoginForm = () => {
 
       const requestBody: LoginRequestDto = {
         documentNumber: data.documentNumber,
-        passwordHash: data.password,
+        password: data.password,
       };
 
-      await login(requestBody);
+      const response = await login(requestBody);
+      setLoginResponse(response);
       router.push(ROUTES.PRODUCTS);
     } catch (error) {
       console.error("Error en login:", error);

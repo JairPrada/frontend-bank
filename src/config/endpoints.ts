@@ -4,7 +4,8 @@ const ENDPOINTS = {
   "create-pre-client": "/api-gateway/v1/users/register",
   "create-product": "/api-gateway/v1/product",
   login: "/api-gateway/v1/auth/login",
-  products: "/api-gateway/v1/product",
+  products: "/api-gateway/v1/product/user",
+  "products-crud": "/api-gateway/v1/product",
 };
 
 export default ENDPOINTS;

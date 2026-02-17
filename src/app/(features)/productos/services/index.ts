@@ -6,18 +6,18 @@ import {
 } from "./dtos/product-response.dto";
 import ENDPOINTS from "@/config/endpoints";
 
-export async function getProducts() {
-  return get<ProductListResponseDto>(ENDPOINTS.products);
+export async function getProducts(userId: string) {
+  return get<ProductListResponseDto>(`${ENDPOINTS.products}/${userId}`);
 }
 
 export async function getProductById(id: string) {
-  return get<ProductResponseDto>(`${ENDPOINTS.products}/${id}`);
+  return get<ProductResponseDto>(`${ENDPOINTS["products-crud"]}/${id}`);
 }
 
 export async function updateProduct(id: string, data: UpdateProductRequestDto) {
-  return put<ProductResponseDto>(`${ENDPOINTS.products}/${id}`, data);
+  return put<ProductResponseDto>(`${ENDPOINTS["products-crud"]}/${id}`, data);
 }
 
 export async function deleteProduct(id: string) {
-  return del<void>(`${ENDPOINTS.products}/${id}`);
+  return del<void>(`${ENDPOINTS["products-crud"]}/${id}`);
 }
