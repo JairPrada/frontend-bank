@@ -1,4 +1,4 @@
-# 🏦 Frontend Bank - Documentación Técnica
+# Frontend Bank - Documentacion Tecnica
 
 ## Tabla de Contenidos
 
