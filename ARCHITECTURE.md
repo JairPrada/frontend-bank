@@ -1,4 +1,4 @@
-# 🏛️ Arquitectura del Sistema - Bank Application
+# Arquitectura del Sistema - Bank Application
 
 ## Tabla de Contenidos
 
@@ -9,6 +9,7 @@
 - [Flujo de Datos](#flujo-de-datos)
 - [Estructuras de Base de Datos](#estructuras-de-base-de-datos)
 - [Endpoints API](#endpoints-api)
+  - [Documentación Swagger](#documentación-swagger-openapi)
 - [Patrones de Diseño](#patrones-de-diseño)
 - [Configuración y Despliegue](#configuración-y-despliegue)
 
@@ -23,17 +24,18 @@ Este proyecto es un **Sistema Bancario Digital** compuesto por una arquitectura 
 - Registrarse y autenticarse en el sistema
 - Gestionar sus productos financieros
 
-### Stack Tecnológico
+### Stack Tecnologico
 
-| Componente | Tecnología | Versión |
-|------------|------------|---------|
-| **Frontend** | Next.js + React | 16.x / 19.x |
-| **API Gateway** | NestJS | 11.x |
-| **Microservicio Products** | NestJS + MongoDB | 11.x |
-| **Base de Datos** | MongoDB | 9.x |
-| **Estado Frontend** | Zustand | 5.x |
-| **Validación** | class-validator / Yup | - |
-| **Observabilidad** | OpenTelemetry + Pino | - |
+| Componente | Tecnologia | Servicio/Version |
+|------------|------------|------------------|
+| Frontend | Next.js + React | 16.x / 19.x |
+| API Gateway | NestJS | 11.x |
+| Microservicio Products | NestJS + Mongoose | 11.x |
+| Base de Datos | MongoDB Atlas | Cloud |
+| Estado Frontend | Zustand | 5.x |
+| Validacion | class-validator / Yup | - |
+| Observabilidad | Grafana Cloud | Cloud |
+| Metricas/Tracing | OpenTelemetry + Pino | - |
 
 ---
 
@@ -90,8 +92,8 @@ Este proyecto es un **Sistema Bancario Digital** compuesto por una arquitectura 
                                       │ Mongoose ODM
                                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                              MONGODB                                         │
-│                        Base de Datos NoSQL                                  │
+│                           MONGODB ATLAS                                      │
+│                   Base de Datos NoSQL (Cloud)                               │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
 │  │ Colecciones:                                                          │   │
 │  │  • users           → Información de usuarios                         │   │
@@ -106,11 +108,11 @@ Este proyecto es un **Sistema Bancario Digital** compuesto por una arquitectura 
 
 ```mermaid
 graph TB
-    subgraph Cliente["🖥️ Cliente"]
+    subgraph Cliente["Cliente"]
         FE[Frontend Bank<br/>Next.js + React]
     end
 
-    subgraph Gateway["🚪 API Gateway :5000"]
+    subgraph Gateway["API Gateway :5000"]
         GW[NestJS Gateway]
         AUTH[Auth Module]
         USERS[Users Module]
@@ -125,7 +127,7 @@ graph TB
         GW --> PROD_PROXY
     end
 
-    subgraph ProductService["📦 Product Service :4000"]
+    subgraph ProductService["Product Service :4000"]
         PS[NestJS Service]
         PS_PROD[Products Module]
         PS_USERS[Users Module]
@@ -134,12 +136,12 @@ graph TB
         PS --> PS_USERS
     end
 
-    subgraph Database["🗄️ MongoDB"]
+    subgraph Database["MongoDB Atlas"]
         USERS_COL[(users)]
         PRODUCTS_COL[(products)]
     end
 
-    subgraph Observability["📊 Observabilidad"]
+    subgraph Observability["Grafana Cloud"]
         OTEL[OpenTelemetry]
         PINO[Pino Logging]
         PROM[Prometheus Metrics]
@@ -359,6 +361,19 @@ erDiagram
 
 ## Endpoints API
 
+### Documentación Swagger (OpenAPI)
+
+Ambos servicios backend cuentan con documentación interactiva Swagger que permite explorar y probar todos los endpoints disponibles:
+
+| Servicio | URL Swagger | Descripción |
+|----------|-------------|-------------|
+| API Gateway | http://localhost:5000/api | Documentación de autenticación, usuarios, OTP y solicitudes |
+| Product Service | http://localhost:4000/api | Documentación de productos y gestión de catálogo |
+
+> Nota: Los servicios deben estar en ejecución para acceder a la documentación Swagger.
+
+---
+
 ### API Gateway (Puerto 5000)
 
 #### Autenticación
@@ -529,59 +544,52 @@ const useFormStore = create<FormSlice>()(
 
 ### Variables de Entorno
 
-#### API Gateway (.env)
+Las variables de entorno para cada servicio fueron enviadas por correo electronico:
 
-```env
-# Server
-PORT=5000
-NODE_ENV=development
+- **API Gateway:** archivo `.env.api-gateway` (copiar como `.env` en la carpeta `api-gateway/`)
+- **Product Service:** archivo `.env.product` (copiar como `.env` en la carpeta `product/`)
 
-# CORS
-CORS_ORIGINS=http://localhost:3000
+Las variables incluyen:
+- URI de conexion a MongoDB Atlas (base de datos en la nube)
+- Credenciales de Grafana Cloud para metricas y observabilidad
+- Configuracion de JWT y CORS
+- URLs de comunicacion entre servicios
 
-# JWT
-JWT_SECRET=your-super-secret-key
-JWT_EXPIRATION=24h
-
-# Microservices
-PRODUCTS_SERVICE_URL=http://localhost:4000
-```
-
-#### Product Service (.env)
-
-```env
-# Server
-PORT=4000
-NODE_ENV=development
-
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/bank-products
-
-# CORS
-CORS_ORIGINS=http://localhost:5000
-
-# JWT
-JWT_SECRET=your-super-secret-key
-```
+**Nota:** No se requiere Docker ni instalacion local de MongoDB. La base de datos esta alojada en MongoDB Atlas y las metricas se envian a Grafana Cloud.
 
 #### Frontend (.env.local)
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
+El frontend no requiere archivo `.env` para desarrollo local. Por defecto se conecta a `http://localhost:5000`.
 
-### Scripts de Desarrollo
+### Orden de Ejecucion
+
+Para ejecutar el sistema completo, seguir este orden:
 
 ```bash
-# Frontend (puerto 3000)
-cd frontend-bank && npm run dev
+# Terminal 1 - Product Service (primero)
+cd product
+npm install
+npm run start:dev
 
-# API Gateway (puerto 5000)
-cd api-gateway && npm run start:dev
+# Terminal 2 - API Gateway (segundo)
+cd api-gateway
+npm install
+npm run start:dev
 
-# Product Service (puerto 4000)
-cd product && npm run start:dev
+# Terminal 3 - Frontend (tercero)
+cd frontend-bank
+npm install
+npm run dev
 ```
+
+Verificar que los servicios estan corriendo:
+
+```bash
+curl http://localhost:4000/health   # Product Service
+curl http://localhost:5000/health   # API Gateway
+```
+
+Luego abrir el navegador en `http://localhost:3000`
 
 ### Rate Limiting
 
